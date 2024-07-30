@@ -4,7 +4,9 @@ from aiohttp import ClientResponse, ClientError
 # Local
 from .aio_requests import AioClient
 from .logger import log
-from .message import form_message, get_headers_from_token
+from .message import (
+    form_text_message, get_headers_from_token, form_sample_message,
+)
 
 
 class Whatsapp:
@@ -23,10 +25,29 @@ class Whatsapp:
     async def send_text_message(
         self, recipient_phone_number: str, text_message: str
     ):
-        data = form_message(
+        data = form_text_message(
             phone_num=recipient_phone_number, text=text_message
         )
         headers = get_headers_from_token(wa_token=self.token)
+        response_data = await self.processing_response(
+            headers=headers, data=data
+        )
+        return response_data
+        
+        
+    async def send_sample_text_message(
+        self, recipient_phone_number: str, sample_name: str
+    ):
+        data = form_sample_message(
+            phone_num=recipient_phone_number, sample_name=sample_name
+        )
+        headers = get_headers_from_token(wa_token=self.token)
+        response_data = await self.processing_response(
+            headers=headers, data=data
+        )
+        return response_data
+
+    async def processing_response(self, headers: dict, data: str):
         response_data = {}
         try:
             response: ClientResponse = \
@@ -50,3 +71,4 @@ class Whatsapp:
         finally:
             await self.client.close_session()
             return response_data
+        

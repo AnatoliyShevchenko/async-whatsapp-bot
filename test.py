@@ -4,15 +4,19 @@ import asyncio
 # Local
 from src.whatsapp import Whatsapp
 
-TOKEN = "token"
+NUMBER_ID = "number_id"
+TOKEN = "your token"
 
 async def main():
-    bot = Whatsapp(number_id="403231522866580", token=TOKEN)
-    temp = await bot.send_text_message(
+    bot = Whatsapp(number_id=NUMBER_ID, token=TOKEN)
+    # temp = await bot.send_text_message(
+    #     recipient_phone_number="number",
+    #     text_message="Привет из питона!"
+    # )
+    temp = await bot.send_sample_text_message(
         recipient_phone_number="number",
-        text_message="Привет из питона!"
+        sample_name="agreement"
     )
-    breakpoint()
 
 
 if __name__ == "__main__":
